@@ -1,5 +1,4 @@
 import ItemProduct from "../../components/ItemProduct/ItemProduct";
-import HeaderBanner from "../../components/banner/banner";
 import CallToAction from "../../components/call-to-action/CallToAction";
 import Breadcrumbs from "../../components/sections/breadcrumbs";
 import Buttons from "../../components/sections/buttons";
@@ -17,8 +16,7 @@ import Notification from "../../components/sections/notification";
 
 const HomePage = () => {
   return (
-    <div className="container-fluid">
-      <HeaderBanner />
+    <div className="home-page">
       <ItemProduct />
       <Buttons />
       <Labels />

@@ -13,7 +13,6 @@ import {
 import * as UserService from "../../services/UserServices";
 import { useMutationHook } from "../../hooks/useMutationHook";
 import LoadingComponent from "../../components/loadingComponent/loadingComponent";
-import * as Message from '../../components/message/message'
 import { jwtDecode } from "jwt-decode";
 import {useDispatch} from 'react-redux'
 import { updateUser } from "../../redux/slides/userSlides";
@@ -30,19 +29,18 @@ const LoginPage = () => {
 
   useEffect(() => {
      if(isSuccess) {
-      Message.success();
       navigate("/");
       localStorage.setItem('access_token', JSON.stringify(data?.access_token));
       if(data?.access_token){
         const decoded = jwtDecode(data?.access_token);
         if(decoded?.id){
-          hanleGetDetailsUser(decoded?.id,data?.access_token)
+          handleGetDetailsUser(decoded?.id,data?.access_token)
         }
       }
     }
   },[isSuccess])
 
-  const hanleGetDetailsUser = async (id,token)=>{
+  const handleGetDetailsUser = async (id,token)=>{
     const res = await UserService.getDetailUser(id,token);
     dispatch(updateUser({...res?.data,access_token:token}))
   }
@@ -112,11 +110,11 @@ const LoginPage = () => {
               <Col md="12">
               {mutation.isPending ? <LoadingComponent></LoadingComponent>:<Button
                     type="submit"
-                    className="btn btn-success waves-effect waves-light m-r-10"
+                    className="btn btn-danger waves-effect waves-light m-r-10"
                     disabled={!email.length || !password.length}
                     onClick={handleLogin}
                   >
-                    Submit
+                    Login
                   </Button>}
                 <Button
                   type="submit"

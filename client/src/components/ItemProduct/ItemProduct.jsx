@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 // import { styles } from "./ItemProduct.css";
 
 const ItemProduct = () => {
   return (
-    <div className="item-product spacer">
+    <Link to='/product-detail' className="item-product">
       <div class="container">
         <div
           class="card"
@@ -30,7 +31,7 @@ const ItemProduct = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

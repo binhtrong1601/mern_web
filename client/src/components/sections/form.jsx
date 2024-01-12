@@ -14,7 +14,6 @@ import * as UserService from "../../services/UserServices";
 import * as Message from "../message/message";
 import { useMutationHook } from "../../hooks/useMutationHook";
 import LoadingComponent from "../loadingComponent/loadingComponent";
-import { Navigate } from "react-router-dom";
 
 
 const PageForm = ({ name, button }) => {
@@ -152,7 +151,7 @@ const PageForm = ({ name, button }) => {
                 ) : (
                   <Button
                     type="submit"
-                    className="btn btn-success waves-effect waves-light m-r-10"
+                    className="btn btn-danger waves-effect waves-light m-r-10"
                     onClick={handleSignup}
                     disabled={
                       !nameUser.length ||

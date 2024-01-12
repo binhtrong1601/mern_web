@@ -1,6 +1,7 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HashLink as Link } from "react-router-hash-link";
+import './header.scss'
 import {
   Container,
   NavbarBrand,
@@ -17,28 +18,42 @@ import {
 } from "reactstrap";
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import * as UserService from "../../services/UserServices";
-import {resetUser} from '../../redux/slides/userSlides'
+import { resetUser } from "../../redux/slides/userSlides";
 
-import logo from "../../assets/images/logos/white-text.png";
+import logo from "../../assets/images/logos/red-logo-text.jpg";
 import { useDispatch, useSelector } from "react-redux";
+import LoadingComponent from "../loadingComponent/loadingComponent";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [userName, setUserName] = useState("");
+  const navigate = useNavigate()
+
+  const dispatch = useDispatch();
+
   const user = useSelector((state) => state.user);
-  const dispatch = useDispatch()
 
   const toggles = () => setIsOpen(!isOpen);
-
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
-  const handleLogout = async () =>{
-    await UserService.logoutUser()
-    dispatch(resetUser())
-  }
+  useEffect(() =>{
+    setUserName(user?.name);
+  },[user.name])
+
+  const handleLogout = async () => {
+    setLoading(true);
+    await UserService.logoutUser();
+    dispatch(resetUser());
+    setLoading(false);
+    navigate("/")
+    window.location.reload();
+  };
 
   return (
-    <div className="topbar" id="top">
+    <div className="topbar" id="top" style={{boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",backgroundColor:"#fff"}}>
       <div className="header6">
         <Container className="po-relative">
           <Navbar className="navbar-expand-lg h6-nav-bar">
@@ -53,65 +68,79 @@ const Header = () => {
               className="hover-dropdown font-14 justify-content-end"
               id="h6-info"
             >
-              {user?.name ? (
-                <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-
-                    <DropdownToggle style={{ padding: "0px", border: "none" }}>
-                      <div
-                        className="btn btn-success-gradiant font-14"
-                        style={{
-                          display: "flex",
-                          gap: "10px",
-                          color: "white",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <UserOutlined />
-                        <div>{user.name}</div>
-                      </div>
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
-                      <DropdownItem>User Info</DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
+              {loading ? (
+                <LoadingComponent></LoadingComponent>
               ) : (
-                <Collapse
-                  isOpen={isOpen}
-                  navbar
-                  className="hover-dropdown font-14 justify-content-end"
-                  id="h6-info"
-                >
-                  <Nav navbar className="ms-auto">
-                    <NavItem>
-                      <Link
-                        className="nav-link"
-                        to={"/"}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "7px",
-                        }}
+                <div>
+                  {user?.name ? (
+                    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                      <DropdownToggle
+                        style={{ padding: "0px", border: "none" }}
                       >
-                        <ShoppingCartOutlined style={{ fontSize: "23px" }} />
-                        Cart
-                      </Link>
-                    </NavItem>
-                    <NavItem>
-                      <Link className="nav-link" to="/signup">
-                        Sign Up
-                      </Link>
-                    </NavItem>
-                  </Nav>
-                  <div className="act-buttons">
-                    <Link
-                      to="/login"
-                      className="btn btn-success-gradiant font-14"
+                        <div
+                          className="btn btn-danger-gradiant font-14"
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            color: "white",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <UserOutlined />
+                          <div>{userName}</div>
+                        </div>
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem className="dropdown-item" onClick={handleLogout}>
+                          Logout
+                        </DropdownItem>
+                        <DropdownItem className="dropdown-item">
+                          <Link to="/profile-user">User Info</Link>
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  ) : (
+                    <Collapse
+                      isOpen={isOpen}
+                      navbar
+                      className="hover-dropdown font-14 justify-content-end"
+                      id="h6-info"
                     >
-                      Log In
-                    </Link>
-                  </div>
-                </Collapse>
+                      <Nav navbar className="ms-auto">
+                        <NavItem>
+                          <Link
+                            className="nav-link"
+                            to={"/"}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "7px",
+                              color: "black"
+                            }}
+                          >
+                            <ShoppingCartOutlined
+                              style={{ fontSize: "23px" }}
+                            />
+                            Cart
+                          </Link>
+                        </NavItem>
+                        <NavItem>
+                          <Link className="nav-link" to="/signup" style={{color: "black" }}>
+                            Sign Up
+                          </Link>
+                        </NavItem>
+                      </Nav>
+                      <div className="act-buttons">
+                        <Link
+                          to="/login"
+                          className="btn btn-danger-gradiant font-14"
+                        >
+                          Log In
+                        </Link>
+                      </div>
+                    </Collapse>
+                  )}
+                </div>
               )}
             </Collapse>
           </Navbar>

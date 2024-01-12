@@ -1,6 +1,7 @@
 import HomePage from "../pages/HomePage/HomePage"
 import LoginPage from "../pages/LoginPage/LoginPage"
 import ProductDetailPage from "../pages/ProductDetailPage/ProductDetailPage"
+import ProfilePage from "../pages/ProfilePage/ProfilePage"
 import SignUpPage from "../pages/SignUpPage/SignUpPage"
 
 
@@ -38,6 +39,11 @@ const routes = [
     {
         path:'/product-detail',
         page: ProductDetailPage,
+        isShowHeader: true
+    },
+    {
+        path:'/profile-user',
+        page: ProfilePage,
         isShowHeader: true
     }
     // {

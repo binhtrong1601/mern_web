@@ -5,7 +5,6 @@ import HeaderBanner2 from '../../components/banner2/banner2'
 const ProductDetailPage = () => {
   return (
     <div class="container-fluid">
-        <HeaderBanner2/>
         <ProductDetailComponent/>
     </div>
   )

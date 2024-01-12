@@ -1,0 +1,20 @@
+.dropdown-item:hover {
+  color: #ff4d7e !important;
+  color: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%);
+  a {
+    color: #ff4d7e;
+    color: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%);
+  }
+}
+
+.dropdown-item {
+  color: black;
+  a {
+    color: black;
+  }
+}
+
+.nav-link:hover{
+    color: #ff4d7e !important;
+    color: linear-gradient(to right, #ff4d7e 0%, #ff6a5b 100%);
+}
