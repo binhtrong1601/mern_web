@@ -142,6 +142,7 @@ const ProfilePage = () => {
                 listType="picture-circle"
                 className="avatar-uploader"
                 showUploadList={false}
+                maxCount={1}
                 action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                 beforeUpload={beforeUpload}
                 onChange={handleAvatarChange}
@@ -152,6 +153,7 @@ const ProfilePage = () => {
                     alt="avatar"
                     style={{
                       width: "100%",
+                      borderRadius:'50px'
                     }}
                   />
                 ) : (

@@ -67,6 +67,7 @@ function App() {
         <Routes>
           {routes.map((item) => {
             const Page = item.page;
+            // const isCheckAuth = !route.isPrivate
             const Layout = item.isShowHeader ? DefaultComponent : Fragment;
             return (
               <Route

@@ -1,3 +1,4 @@
+import AdminPage from "../pages/AdminPage/AdminPage"
 import HomePage from "../pages/HomePage/HomePage"
 import LoginPage from "../pages/LoginPage/LoginPage"
 import ProductDetailPage from "../pages/ProductDetailPage/ProductDetailPage"
@@ -45,6 +46,12 @@ const routes = [
         path:'/profile-user',
         page: ProfilePage,
         isShowHeader: true
+    },
+    {
+        path:'/system/admin',
+        page: AdminPage,
+        isShowHeader: false,
+        isPrivate: true
     }
     // {
     //     path:'*',

@@ -1,36 +1,42 @@
 /* eslint-disable */
 import React, { useEffect, useState } from "react";
 import { HashLink as Link } from "react-router-hash-link";
-import './header.scss'
+import "./header.scss";
 import {
   Container,
   NavbarBrand,
-  Navbar,
   Nav,
   NavItem,
-  NavbarToggler,
-  Collapse,
   DropdownToggle,
   DropdownItem,
   DropdownMenu,
-  ButtonDropdown,
   Dropdown,
+  Row,
+  Col,
 } from "reactstrap";
-import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  SearchOutlined,
+  ShoppingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import * as UserService from "../../services/UserServices";
 import { resetUser } from "../../redux/slides/userSlides";
 
-import logo from "../../assets/images/logos/red-logo-text.jpg";
+import logo from "../../assets/images/logos/brandy_2.png";
+import logo2 from "../../assets/images/logos/united-states-flag.svg";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../loadingComponent/loadingComponent";
 import { useNavigate } from "react-router-dom";
+import { Flex } from "antd";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [userAvatar, setUserAvatar] = useState("");
   const [userName, setUserName] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -39,111 +45,194 @@ const Header = () => {
   const toggles = () => setIsOpen(!isOpen);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
 
-  useEffect(() =>{
+  useEffect(() => {
     setUserName(user?.name);
-  },[user.name])
+    setUserAvatar(user?.avatar);
+  }, [user.name, user?.avatar]);
 
   const handleLogout = async () => {
     setLoading(true);
     await UserService.logoutUser();
     dispatch(resetUser());
     setLoading(false);
-    navigate("/")
+    navigate("/");
     window.location.reload();
   };
 
   return (
-    <div className="topbar" id="top" style={{boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",backgroundColor:"#fff"}}>
+    <div
+      className="headers"
+      id="top"
+      style={{
+        backgroundColor: "#fff",
+      }}
+    >
       <div className="header6">
         <Container className="po-relative">
-          <Navbar className="navbar-expand-lg h6-nav-bar">
-            <NavbarBrand href="/">
-              <img src={logo} alt="wrapkit" />
-            </NavbarBrand>
-            <NavbarToggler onClick={toggles}>
-              <span className="ti-menu"></span>
-            </NavbarToggler>
-            <Collapse
-              navbar
-              className="hover-dropdown font-14 justify-content-end"
-              id="h6-info"
+          {/* <Navbar className="navbar-expand-lg h6-nav-bar"> */}
+          <Row xs="3">
+            <Col>
+              <NavbarBrand href="/">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg"
+                  alt="wrapkit"
+                  style={{ maxWidth: "50px" }}
+                />
+              </NavbarBrand>
+            </Col>
+            <Col
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              {loading ? (
-                <LoadingComponent></LoadingComponent>
-              ) : (
-                <div>
-                  {user?.name ? (
-                    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-                      <DropdownToggle
-                        style={{ padding: "0px", border: "none" }}
-                      >
-                        <div
-                          className="btn btn-danger-gradiant font-14"
-                          style={{
-                            display: "flex",
-                            gap: "10px",
-                            color: "white",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <UserOutlined />
-                          <div>{userName}</div>
-                        </div>
-                      </DropdownToggle>
-                      <DropdownMenu>
-                        <DropdownItem className="dropdown-item" onClick={handleLogout}>
-                          Logout
-                        </DropdownItem>
-                        <DropdownItem className="dropdown-item">
-                          <Link to="/profile-user">User Info</Link>
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
-                  ) : (
-                    <Collapse
-                      isOpen={isOpen}
-                      navbar
-                      className="hover-dropdown font-14 justify-content-end"
-                      id="h6-info"
-                    >
-                      <Nav navbar className="ms-auto">
-                        <NavItem>
-                          <Link
-                            className="nav-link"
-                            to={"/"}
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "7px",
-                              color: "black"
-                            }}
-                          >
-                            <ShoppingCartOutlined
-                              style={{ fontSize: "23px" }}
+              <NavbarBrand href="/">
+                <img src={logo} alt="wrapkit" style={{ maxWidth: "300px" }} />
+              </NavbarBrand>
+            </Col>
+            <Col
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              <div
+                navbar
+                className="hover-dropdown font-14 justify-content-end"
+                id="h6-info"
+              >
+                {loading ? (
+                  <LoadingComponent></LoadingComponent>
+                ) : (
+                  <div>
+                    {user?.name ? (
+                      <div className="header-icon">
+                        <Nav navbar className="ms-auto" style={{ gap: "22px" }}>
+                          <NavItem>
+                            <Link className="nav-link button-cart" to={"/"}>
+                              <SearchOutlined
+                                style={{ fontSize: "20px", color: "#b1b0ab" }}
+                              />
+                            </Link>
+                          </NavItem>
+                          <NavItem>
+                            <Link
+                              to="#"
+                              className="nav-link"
+                              style={{
+                                fontWeight: 500,
+                                textTransform: "uppercase",
+                              }}
+                            >
+                              HEY, {user.name}!
+                            </Link>
+                          </NavItem>
+                          <NavItem>
+                            <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                              <DropdownToggle
+                                style={{
+                                  backgroundColor: "transparent",
+                                  border: "none",
+                                  padding: "0px",
+                                  boxShadow: "none",
+                                }}
+                              >
+                                <MenuOutlined
+                                  style={{ fontSize: "20px", color: "#b1b0ab" }}
+                                />
+                              </DropdownToggle>
+                              <DropdownMenu>
+                                <DropdownItem>GIFT CARDS</DropdownItem>
+                                <DropdownItem>GIFT CARDS</DropdownItem>
+                                <DropdownItem>GIFT CARDS</DropdownItem>
+                                <DropdownItem>GIFT CARDS</DropdownItem>
+                                <DropdownItem className="dropdown-item">
+                                  <Link to="/profile-user" style={{color:"#b1b0ab"}}>USER INFO</Link>
+                                </DropdownItem>
+                                <DropdownItem
+                                  className="dropdown-item"
+                                  onClick={handleLogout}
+                                >
+                                  LOGOUT
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
+                          </NavItem>
+                          <NavItem>
+                            <ShoppingOutlined
+                              style={{ fontSize: "25px", color: "#b1b0ab" }}
                             />
-                            Cart
-                          </Link>
-                        </NavItem>
-                        <NavItem>
-                          <Link className="nav-link" to="/signup" style={{color: "black" }}>
-                            Sign Up
-                          </Link>
-                        </NavItem>
-                      </Nav>
-                      <div className="act-buttons">
-                        <Link
-                          to="/login"
-                          className="btn btn-danger-gradiant font-14"
-                        >
-                          Log In
-                        </Link>
+                          </NavItem>
+                        </Nav>
                       </div>
-                    </Collapse>
-                  )}
-                </div>
-              )}
-            </Collapse>
-          </Navbar>
+                    ) : (
+                      <div className="header-icon">
+                        <Nav navbar className="ms-auto" style={{ gap: "22px" }}>
+                          <NavItem>
+                            <Link className="nav-link button-cart" to={"/"}>
+                              <SearchOutlined
+                                style={{ fontSize: "20px", color: "#b1b0ab" }}
+                              />
+                            </Link>
+                          </NavItem>
+                          <NavItem>
+                            <Link to="/login" className="nav-link">
+                              LOGIN
+                            </Link>
+                          </NavItem>
+                          <NavItem>
+                            <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                              <DropdownToggle
+                                style={{
+                                  backgroundColor: "transparent",
+                                  border: "none",
+                                  padding: "0px",
+                                  boxShadow: "none",
+                                }}
+                              >
+                                <MenuOutlined
+                                  style={{ fontSize: "20px", color: "#b1b0ab" }}
+                                />
+                              </DropdownToggle>
+                              <DropdownMenu>
+                                <DropdownItem>GIFT CARDS</DropdownItem>
+                                <DropdownItem>GIFT CARDS</DropdownItem>
+                                <DropdownItem>GIFT CARDS</DropdownItem>
+                                <DropdownItem>GIFT CARDS</DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
+                          </NavItem>
+                          <NavItem>
+                            <ShoppingOutlined
+                              style={{ fontSize: "25px", color: "#b1b0ab" }}
+                            />
+                          </NavItem>
+                        </Nav>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </Col>
+          </Row>
+          <Row
+            xs="3"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Nav navbar className="menu-categories">
+              <NavItem className="menu-categories-item">JUST IN</NavItem>
+              <NavItem className="menu-categories-item">JUST IN</NavItem>
+              <NavItem className="menu-categories-item">JUST IN</NavItem>
+              <NavItem className="menu-categories-item">JUST IN</NavItem>
+              <NavItem className="menu-categories-item">JUST IN</NavItem>
+            </Nav>
+          </Row>
         </Container>
       </div>
     </div>
